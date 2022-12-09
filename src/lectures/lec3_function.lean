@@ -128,10 +128,10 @@ Let `g : ℚ × ℚ → ℝ` be the function defined by `g (x,y) = x^2 + y^2`.
 #check ( (1/3, 7/5) : ℚ × ℚ ) 
 
 def rational_sum_of_squares (z : ℚ × ℚ) := 
-(z.1)^2 + (z.2)^2
+((z.1), (z.2))
 
-
-#eval rational_sum_of_squares (3/5, 4/5)
+#check rational_sum_of_squares
+#eval rational_sum_of_squares (3, 4)
 
 
 -- `.1` and `.2` are projections from the cartesian space `ℚ × ℚ` to `ℚ` which pick the first and second coordinates. 
