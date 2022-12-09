@@ -33,11 +33,16 @@ namespace category_str
 
 
 /-! ## Functors
+
 Functors are homomorphism of categories, they are the way we map one category into another. 
+
 A homomorphism `F : 𝓒 → 𝓓` maps 
+
 - the objects of `𝓒` to the objects of `𝓓` (via a function `F₀ : 𝓒.obj → 𝓓.obj`)
 - the morphisms of `𝓒` to the morphisms of `𝓓` (via a function `F₁ : 𝓒.mor → 𝓓.mor`)
+
 in such a way that the operations of identity and compositions are preserved, i.e. 
+
 - `F₁ (𝟙 X) = 𝟙 (F₀ X)` --  identities in `𝓒` go to identities in `𝓓` 
 - `F₁ (g ⊚ f) = F₁(g) ⊚ F₁(f)` -- compositions in `𝓒` go to compositions in `𝓓` 
 -/
@@ -226,6 +231,7 @@ end
 
 /-! ## Representable Functors  
 To every object `X` of a category `𝓒` we can associate a functor `Ϳ X : 𝓒 ⥤ Type*` which maps an object `Y` in `𝓒` to the type `X ⟶ Y` of morphisms from `X` to `Y` in `𝓒`. 
+
 Recall that To build a functor `F : 𝓒 ⥤ 𝓓` we need to specify four fields
 * `obj : 𝓒 → 𝓓`
 * `mor : ∀ {X Y : 𝓒} (f : X ⟶ Y), obj X ⟶ obj Y`
@@ -340,6 +346,7 @@ def Cat := bundled small_category_str -- The type of small categories (where the
 #check Cat
 
 /- Examples of use of bundled types: 
+
 If we have a term `M : mult_Monoid` ie a type bundled together with a monoid structure, then we can immediately infer that `M.str` is a monoid structure on the underlying type `M.carrier`. 
 -/
 instance (M : mult_Monoid) : mult_monoid_str M.carrier := M.str 
@@ -352,6 +359,7 @@ instance (G :additive_Group) : additive_group_str G.carrier := G.str
 
 /-! ## The Category of Monoids
 Recall from HW10 how the idenity homomorphism of monoids and the compositions of homomorphisms of monoids were defined. 
+
 Here we also prove the unitality and associativity of composition. 
 -/
 
@@ -453,6 +461,7 @@ instance cat_of_cat : large_category_str Cat  :=
   hom := λ 𝓒 𝓓, 𝓒.carrier ⥤ 𝓓.carrier,
   id := λ 𝓒, 𝟭 𝓒.carrier,
   /- For composition after introducing `𝓒 𝓓 𝓔 F G` the context and goal are as follows
+
   𝓒 𝓓 𝓔 : Cat,
   F : ↥𝓒 ⥤ ↥𝓓,
   G : ↥𝓓 ⥤ ↥𝓔

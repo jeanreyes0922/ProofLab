@@ -1,5 +1,9 @@
 /-
-Algebra of Functions: Part II
+Copyright (c) 2022 Sina Hazratpour. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+----------------
+
+# Algebra of Functions: Part II
 Sina Hazratpour
 Introduction to Proof
 MATH 301, Johns Hopkins University, Fall 2022
@@ -13,11 +17,16 @@ set_option pp.generalized_field_notation false
 -- set_option pp.all true
 
 
+/- 
+New tactic we'll learn in this lesson: 
+8. funext 
+9. linarith
+-/
 
 
 namespace PROOFS
 
-variables {A B C X Y Z U V W : Type} -- curly brackets make type implicit and that is what you get things like M_1? ...
+variables {A B C X Y Z U V W : Type} -- curly brackets make type implicit and that is what you get things like M_1? ...-- curly brackets make type implicit and that is what you get things like M_1? ... 
 
 
 /-! ### Functions evaluation
@@ -28,7 +37,9 @@ variables {A B C X Y Z U V W : Type} -- curly brackets make type implicit and th
 
 **Answer** : They all had one input and one output.
 -/
+-/
 
+#check rational_sum_of_squares -- one input one output
 #check rational_sum_of_squares -- one input one output
 
 /-
@@ -71,6 +82,7 @@ m * m * n * n
 #check mul_square
 #check mul_square 1 -- the type of `mul_square 1` is `ℕ → ℕ`
 
+/-Question: what does the function `mul_square 1` do?  -/
 /-Question: what does the function `mul_square 1` do?  -/
 
 /- The following functions from mathlib all take 2 inputs and return 1 output -/
@@ -133,13 +145,34 @@ p.1
 -- #check fst
 -- #check fst (1 , 2)
 #check fst (2, 1)
+#check fst (2, 1)
 #eval fst (2, 1)
+
+
 
 
 
 
 def snd (p : X × Y) :=
 p.2
+
+
+/-! ### Examples of a function which take a function as its argument -/
+
+def evaluation (f : X → Y) (x : X) := f x
+#check evaluation  
+#eval evaluation double 3 
+
+-- CHALLENGE: Write `evaluation` in the lambda notation. 
+
+
+/-! ### Examples of a function which take a function as its argument -/
+
+def evaluation (f : X → Y) (x : X) := f x
+#check evaluation  
+#eval evaluation double 3 
+
+-- CHALLENGE: Write `evaluation` in the lambda notation. 
 
 
 -- An example of a function which take a function as its argument
@@ -252,12 +285,38 @@ def copy (x : X) : X × X :=
 #check @copy
 
 
+def curry : (X × Y → Z) → (X → (Y → Z)) :=
+ λf, λ x, λ y, f (x, y)
 
-def curry : (X × Y → Z) → X → (Y → Z) :=
-λ f, λ x, λ y, f (x , y)
+#check curry
+#check @curry
+#check @curry X Y Z
 
-def uncurry : (X → (Y → Z)) → (X × Y → Z) :=
-λ f, λ p, f p.1 p.2
+def uncurry : (X → (Y → Z)) → (X × Y → Z) := 
+λ f, λ p, f p.1 p.2 
+#check @uncurry
+#check @uncurry X Y Z
+
+
+#check curry ∘ uncurry 
+#check @curry X Y Z ∘ @uncurry X Y Z
+
+example : 
+  @curry X Y Z  ∘ @uncurry X Y Z = id := 
+begin
+  funext f x y, 
+  dsimp,
+  unfold uncurry,
+  unfold curry,
+end 
+
+
+
+example : 
+  @uncurry X Y Z  ∘ @curry X Y Z = id := 
+begin
+  sorry, 
+end 
 
 #check curry
 #check (curry fst) ff 2
@@ -290,11 +349,44 @@ def my_complicated_function : (X → Y → Z) → ((Y → X) → Y) → X → Z 
 
 
 
+
 /-! ### Equality of Functions
 Once we have defined functions (or anything) in Lean we can prove properties of them: For instance we might want to prove two functions are equal to each other.
 
-__Function Extensionality__ is a logical principle which says that we can prove two functions `f : X → Y` and `g : X → Y`  (with the same domain and the same codomain) are equal (written as `f = g` ) if for all elements `x : X` we have a proof of `f x = g x`. In Lean, this is `funext`. Here's a little secret: `funext` is assumed in Lean so we do not need to be explicit about it when we use it.
+__Function Extensionality__ is a logical principle which says that we can prove two functions `f : X → Y` and `g : X → Y`  (with the same domain and the same codomain) are equal (written as `f = g` ) if for all elements `x : X` we have a proof of `f x = g x`. In Lean, this is `funext`. Here's a little secret: `funext` is assumed in Lean so we do not need to be explicit about it when we use it. 
 -/
+
+
+example : (λ n : ℕ, (2 * n)) = (λ n: ℕ, n + n) := 
+begin
+ funext x, -- we fix x : ℕ (alternatively, let n: ℕ be given)
+ rw two_mul, -- we need to prove 2 * n = n + n which is proved by lemma `two_mul`
+end 
+
+
+
+example : (λ n : ℕ, (2 * n)) = (λ n: ℕ, n + n) := 
+begin
+ funext x, -- we fix x : ℕ (alternatively, let n: ℕ be given)
+ rw ← two_mul, 
+ -- we need to prove 2 * n = n + n which is proved by lemma `two_mul`
+end 
+
+
+
+example : (λ n : ℕ, (2 * n)) = (λ n: ℕ, n + n) := 
+begin
+ funext, -- we fix n : ℕ (alternatively, let n: ℕ be given)
+ exact two_mul n,
+end 
+
+
+
+
+
+
+
+
 
 example : (λ n : ℕ, (2 * n)) = (λ n: ℕ, n + n) :=
 begin
@@ -302,7 +394,18 @@ funext,
 -- After ext, we must show that given x : ℕ, we have 2 * x = x + x
 -- refl, note that refl does not work. what error do you get if you try refl after ext?
 ring,
-end
+end 
+
+
+
+
+example : (λ n : ℕ, (2 * n)) = (λ n: ℕ, n + n) := 
+begin
+funext, 
+-- After ext, we must show that given x : ℕ, we have 2 * x = x + x
+-- refl, note that refl does not work. what error do you get if you try refl after ext? 
+ring,
+end 
 
 
 
@@ -371,8 +474,26 @@ begin
 end
 
 
+/-! ### Functions out of empty type 
+There is a type which is called the __empty__ type and is denoted by `empty` in Lean. This type does not have any terms in it. Therefore, to specify a function with domain `empty` and codomain `X` (for any type `X`) we do not need to do anything, since there is no term in `empty` for which we need to return a term of `X`. Therefore, there is always a function `empty → X` for any type `X`. 
+-/
 
-/-! ### Functions out of unit type
+#check empty.elim
+#check (empty.elim : empty → X)
+
+
+/- Let's prove that any two functions of type `empty → X` are equal. Therefore, there is a __unique__ function `empty → X`. -/
+
+lemma empty_unique_fun (f g : empty → X) : 
+  f = g :=
+begin
+  funext, 
+  exact empty.elim x, 
+end  
+
+
+
+/-! ### Functions out of unit type 
 There is a type which is called the __unit__ type and is denoted by `unit` in Lean. This type has exactly one term in it which is `unit.star`.
 -/
 
