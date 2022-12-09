@@ -84,7 +84,7 @@ variables (f₀ : ℕ → ℤ) (g₀ : ℤ → ℚ) (h₀ : ℚ → ℕ )
 -/
 
 -- #check g₀ ∘ f₀
-#check h₀ ∘ f₀ -- can you understand the error?
+--#check h₀ ∘ f₀ -- can you understand the error?
 #check (h₀ ∘ g₀) ∘ f₀
 #check h₀ ∘ (g₀ ∘ f₀)
 #check (h₀ ∘ g₀) ∘ f₀
@@ -127,10 +127,9 @@ end
 section
 variable b : bool
 #check switch b
-#eval switch b
 end
 
-
+/-
 lemma switch_switch_alt :
   switch ∘ switch = id :=
 begin
@@ -138,7 +137,7 @@ begin
   dsimp,
   refl, -- this does not work since `switch b` depends on the value of `b`, and we have to reason by cases.
 end
-
+-/
 
 
 lemma switch_switch :

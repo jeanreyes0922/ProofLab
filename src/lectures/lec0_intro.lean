@@ -320,7 +320,7 @@ example (x : ℕ) :
   0 + x = x :=
   -- true by proof 
 begin
-  sorry
+  rw zero_add,
 end
 
 example : 
@@ -338,13 +338,13 @@ end
 -- try `refl` in below; does it work?
 example (x y : ℝ) : x + y = y + x :=
 begin
-  sorry
+  rw add_comm,
 end
 
 -- what about here? does `refl` work?
 example : ∀ x y : ℝ, (x + y) ^ 3 = x ^ 3 + 3 * x ^ 2 + 3 * x + 1 :=
 begin
-  sorry
+  sorry,
 end
 
 

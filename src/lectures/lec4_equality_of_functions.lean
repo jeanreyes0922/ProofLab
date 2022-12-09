@@ -241,7 +241,7 @@ def swap_pair_alt {X Y : Type} : X × Y → Y × X :=
 example :
   swap_pair_alt ( swap_pair_alt (1, 3) ) = (1,3)  :=
 begin
-  sorry,
+  rw swap_pair_alt,
 end
 
 

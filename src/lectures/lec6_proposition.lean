@@ -23,7 +23,7 @@ MATH 301, Johns Hopkins University, Fall 2022
 -/
 import ..prooflab
 --import .arithmetic_with_tactics
-import .lec5_function_composition -- importing is transitive, hence we have already imported proofs1 and proofs0.
+import lectures.lec5_function_composition -- importing is transitive, hence we have already imported proofs1 and proofs0.
 set_option pp.beta true
 set_option pp.generalized_field_notation false
 -- set_option pp.all true
@@ -1031,10 +1031,10 @@ begin
   {
     intro apb,
     cases apb with a pb,
-
+    sorry,
   },
   {
-
+    sorry,
   },
 end 
 -- What is the general statement here? 

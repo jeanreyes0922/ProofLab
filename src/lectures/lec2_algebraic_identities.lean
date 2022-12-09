@@ -5,7 +5,7 @@ Introduction to Proof
 MATH 301, Johns Hopkins University, Fall 2022   
 -/
 import ..prooflab
--- import lectures.lec1_def_lem_thm
+import lectures.lec1_def_lem_thm
 
 set_option pp.beta true
 set_option pp.generalized_field_notation false
@@ -42,9 +42,9 @@ Then the tactic `calc` takes advanatge of the transitivity of equality to bind a
 
 example (x y z w : ℝ) (h₁ : x = y) (h₂ : y + 1 = z + 2) (h₃ : z = w) : x + 1 = w + 2 :=
 begin
-rw ← h₃,  -- there is `w` in the goal and we want to replace it by `z` because we know `h₂` says something `z`.
-rw h₁, -- we replace `x` in the goal by `y`. 
-exact h₂, -- proof from the context.
+  rw ← h₃,  -- there is `w` in the goal and we want to replace it by `z` because we know `h₂` says something `z`.
+  rw h₁, -- we replace `x` in the goal by `y`. 
+  exact h₂, -- proof from the context.
 end 
 
 
@@ -74,9 +74,9 @@ end
 
 example (x y z w : ℝ) (h₁ : x = y) (h₂ : y + 1 = z + 2) (h₃ : z = w) : x + 1 = w + 2 :=
 begin 
-  calc x + 1 = y + 1 : sorry 
-  ...        = z + 2 : sorry 
-  ...        = w + 2 : sorry, -- this is where the `calc` tactic ends so we need a comma. 
+  calc x + 1 = y + 1 : by rw h₁
+  ...        = z + 2 : by rw h₂
+  ...        = w + 2 : by rw h₃, -- this is where the `calc` tactic ends so we need a comma. 
 end
 
 
@@ -212,7 +212,7 @@ To make polyrith work on your system you need to have the following installed on
 example (a b : ℤ) (h₁ : a - 5 * b = 4) (h₂ : b + 2 = 3) : 
   a = 9 :=
 begin
-  -- polyrith
+  sorry,-- polyrith
 end 
 
 
@@ -224,7 +224,7 @@ end
 example {x y : ℤ} (h₁ : 2 * x + y = 4) (h₂ : x + y = 1) : 
   x = 3 :=
 begin
-sorry,  
+  sorry,  
 end 
 
 
@@ -321,7 +321,7 @@ section
 variables a b c d : ℝ
 #check (add_le_add : a ≤ b → c ≤ d → a + c ≤ b + d)
 #check (lt_add_one a : a < a + 1)
-#check le_of_eq
+#check @le_of_eq
 #check le_of_eq (refl a)
 end 
 

@@ -18,7 +18,7 @@ MATH 301, Johns Hopkins University, Fall 2022
 
 import ..prooflab
 import .lec6_proposition
-import ..homework.hw5
+--import homework.hw5.lean
 
 -- TODO: write properties of affine points like being in the upper half plane, etc
 --import .logic_prop -- importing is transitive, hence we have already imported proofs1 and proofs0.
@@ -49,7 +49,7 @@ let `P` be the predicate with the domain `ℕ` of natural numbers and let `P(n)`
 
 In Lean, we model predicates by functions into the type `Prop` of propositions. A __unary__ predicate `P` on a domain `X`, therefore, is a function `P : X → Prop` . Here `X` is said to be the __domain of discourse__ of `P` or simply the __domain__ of `P`. Note that `P`, upon taking a variables `x : X`, outputs a proposition `P(x)`.
 -/
-
+universe u
 variables {X Y Z : Type}
 
 
@@ -184,7 +184,7 @@ The __existential quantifier__ in logic encodes the phrase “there exists”. T
 
 -- def is_even (n : ℕ) := ∃ k , n = 2 * k
 -- def is_odd (n : ℕ ) := ∃ k , n = 2 * k + 1
-def is_odd_alt (n : ℕ) := ¬ is_even n
+-- def is_odd_alt (n : ℕ) := ¬ is_even n
 
 
 /-
@@ -256,7 +256,10 @@ The corresponding Lean tactic is `cases ... with ...`.
 example (x : ℕ) :
   (∃ y : ℕ, y + 1 = x) → (x ≠ 0) :=
 begin
-  sorry,
+  intro h₁,
+  intro h₂,
+  cases h₁ with h₁ h₃,
+  linarith,
 end
 
 
@@ -315,7 +318,17 @@ example :
   ∀ n : ℕ, divides 2 n ↔ is_even n :=
 begin
   intro n,
-  sorry
+  split,
+  {
+    unfold divides,
+    unfold is_even,
+    intro h,
+    assumption,
+  },
+  {
+    intro h,
+    assumption,
+  },
 end
 
 
@@ -346,9 +359,9 @@ begin
   apply self_divide_self_sqr,
 end
 
-lectures > lec7_predicate: universal quantifier Yesterday
+--lectures > lec7_predicate: universal quantifier Yesterday
 
-Sina Hazratpour:
+--Sina Hazratpour:
 /-! ## Quantifiers
 __Quantifiers__ turn unary predicates into propositions by quantifying over their domain. -/
 
@@ -481,7 +494,7 @@ begin
   intro hA,
   intro x,
   apply hAB,
-  sorry,
+  exact hA x,
 end
 --lectures > lec7_predicate: existential quantifier Yesterday
 
@@ -567,7 +580,11 @@ The corresponding Lean tactic is `cases ... with ...`.
 example (x : ℕ) :
   (∃ y : ℕ, y + 1 = x) → (x ≠ 0) :=
 begin
-  sorry,
+  intro h,
+  intro h₁,
+  cases h with h₂ h₃,
+  rw h₁ at h₃,
+  linarith,
 end
 
 
@@ -614,8 +631,8 @@ An example of binary predicates on `ℕ` built from `∃`
 `divides m n` states that the natural number `m` divides natural number `n`. For instance
 -/
 
-def divides (m n : ℕ) := ∃ k : ℕ, n = m * k
-#check divides
+--def divides (m n : ℕ) := ∃ k : ℕ, n = m * k
+--#check divides
 
 /-
 Be careful: the divisibility symbol is not the ordinary bar on your keyboard. Rather, it is a unicode character obtained by typing `\|` in VS Code.
@@ -626,29 +643,29 @@ example :
   ∀ n : ℕ, divides 2 n ↔ is_even n :=
 begin
   intro n,
-  sorry
+  sorry,
 end
 
 
-lemma self_divide_self_sqr (x : ℕ)
-  : divides x (x^2) :=
-begin
- use x,
+--lemma self_divide_self_sqr (x : ℕ)
+--  : divides x (x^2) :=
+--begin
+-- use x,
  -- refl,
- exact pow_two x,
-end
+-- exact pow_two x,
+--end
 
 
 
-lemma divides_trans (x y z : ℕ) (h₀ : divides x y) (h₁ : divides y z) :
+--lemma divides_trans (x y z : ℕ) (h₀ : divides x y) (h₁ : divides y z) :
   divides x z :=
-begin
-  unfold divides at *,
-  cases h₀ with k₀ hk₀,
-  cases h₁ with k₁ hk₁,
-  use k₀ * k₁,
-  rw [← mul_assoc, ← hk₀, hk₁],
-end
+--begin
+  --unfold divides at *,
+  --cases h₀ with k₀ hk₀,
+  --cases h₁ with k₁ hk₁,
+  --use k₀ * k₁,
+  --rw [← mul_assoc, ← hk₀, hk₁],
+--end
 
 
 example (a b : ℕ) :
@@ -747,7 +764,7 @@ end
 
 
 -- A function is __surjective__ if for every element `y` of the codomain `Y` there is some `x` in  the domain `X` such that `f x = y ` in `Y`.
-def is_surjective {X Y : Type} (f : X → Y) :=
+def is_surjective {X Y : Type u} (f : X → Y) :=
 ∀ y : Y, ∃ x : X, f x = y
 
 
@@ -811,6 +828,37 @@ begin
   have h₂: x₁ = x₂, from inj_f h₁,
   assumption,
 end
+
+example{A : bool → Prop}:
+(∀ b : bool, A b) ↔ A ff ∧ A tt:=
+begin
+  split,
+  {
+    intro hAb,
+    split,
+    {
+      exact hAb ff,
+    },
+    {
+      exact hAb tt,
+    },
+  },
+  {
+    intro ha,
+    cases ha,
+    intro b,
+    cases b,
+    {
+      assumption,
+    },
+    {
+      assumption,
+    },
+  },
+end
+
+--`∀` is like `∧` and `→`
+--`∃` is like 
 
 
 end PROOFS
