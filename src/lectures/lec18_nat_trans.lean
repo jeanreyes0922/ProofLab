@@ -364,8 +364,8 @@ def ℍom : 𝓒 ⥤ (𝓒ᵒᵖ ⥤ Type v₁) :=
 
 
 
-def Yoneda (X Y : 𝓒) (α : ℍom.obj X ≅  ℍom.obj Y) : 
-  X ≅ Y :=
+def Yoneda (X Y : 𝓒) (α : category_str.equiv (ℍom.obj X) (ℍom.obj Y)) : 
+  category_str.equiv X Y :=
 { 
   to_mor := α.to_mor.cmpt (op X) (𝟙 X),
   inv_mor := α.inv_mor.cmpt (op Y) (𝟙 Y),
