@@ -493,7 +493,7 @@ structure equiv (X Y : 𝓒) :=
 (right_inv : inv_mor ⊚ to_mor = (𝟙 X)  )
 
 
-infix ` ≅ `:85 := equiv
+local notation ` ≅ `:85 := equiv
 
 
 

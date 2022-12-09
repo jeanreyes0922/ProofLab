@@ -377,7 +377,7 @@ def mult_monoid.morphism.comp {L M N : Type} [mult_monoid_str L] [mult_monoid_st
   resp_mul := by {simp,}, } 
 
 
-infixr  ` ∘* ` : 90  := mult_monoid.morphism.comp
+local notation  ` ∘* ` : 90  := mult_monoid.morphism.comp
 
 local notation F ` ⊚⊚ `:80 G:80 := functor.comp G F 
 
