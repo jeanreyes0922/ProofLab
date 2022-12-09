@@ -37,7 +37,6 @@ variables {A B C X Y Z U V W : Type} -- curly brackets make type implicit and th
 
 **Answer** : They all had one input and one output.
 -/
--/
 
 #check rational_sum_of_squares -- one input one output
 #check rational_sum_of_squares -- one input one output
@@ -164,24 +163,6 @@ def evaluation (f : X → Y) (x : X) := f x
 #eval evaluation double 3 
 
 -- CHALLENGE: Write `evaluation` in the lambda notation. 
-
-
-/-! ### Examples of a function which take a function as its argument -/
-
-def evaluation (f : X → Y) (x : X) := f x
-#check evaluation  
-#eval evaluation double 3 
-
--- CHALLENGE: Write `evaluation` in the lambda notation. 
-
-
--- An example of a function which take a function as its argument
-
-def evaluation (f : X → Y) (x : X) := f x
-#check evaluation
-#eval evaluation double 3
-
--- CHALLENGE: Write `evaluation` in the lambda notation.
 
 -- `pairing` is a function which takes as input two functions.
 def pairing (f : Z → X) (g : Z → Y) (z : Z) : X × Y :=
@@ -483,14 +464,6 @@ There is a type which is called the __empty__ type and is denoted by `empty` in 
 
 
 /- Let's prove that any two functions of type `empty → X` are equal. Therefore, there is a __unique__ function `empty → X`. -/
-
-lemma empty_unique_fun (f g : empty → X) : 
-  f = g :=
-begin
-  funext, 
-  exact empty.elim x, 
-end  
-
 
 
 /-! ### Functions out of unit type 
