@@ -17,7 +17,7 @@ namespace PROOFS
 
 
 namespace STR  --nested inside the namespace PROOFS
-
+universe u
 variables {X Y Z : Type}
 variable {f : X → Y}
 
@@ -133,7 +133,7 @@ def endo (A : Type)  := A → A
 def id_A {A : Type} : endo A := id
 
 /- `fun_equiv` (function equivalence) is the type of functions from `X → Y` with a two-sided inverse -/ 
-structure fun_equiv (X : Type) (Y : Type) :=
+structure fun_equiv (X : Type u) (Y : Type u) :=
 (to_fun    : X → Y)
 (inv_fun   : Y → X)
 (left_inv  : inv_fun ∘ to_fun = id) -- i.e. inv_fun ∘ to_fun = id_X
